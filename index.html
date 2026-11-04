@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#153b32">
+<meta name="description" content="Tu plan sencillo de calistenia en casa.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<title>Mi Calistenia</title>
+<style>
+:root{--bg:#f3f6f2;--card:#fff;--ink:#17342d;--muted:#63766f;--green:#1c5948;--pale:#e2eee7;--line:#dce5df}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px system-ui,-apple-system,Segoe UI,sans-serif}
+header{background:var(--green);color:white;padding:22px 18px 18px;border-radius:0 0 22px 22px}
+h1{margin:0;font-size:25px}header p{margin:6px 0 0;color:#d9e9df}
+main{max-width:720px;margin:auto;padding:16px 14px 90px}.tabs{display:flex;gap:7px;position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:2}
+button{font:inherit;cursor:pointer;border:0;border-radius:12px;padding:11px 13px;background:var(--pale);color:var(--ink);font-weight:650}
+.tabs button{flex:1;padding:10px 4px;font-size:14px}.tabs button.active,.primary{background:var(--green);color:white}
+.card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:16px;margin:12px 0;box-shadow:0 3px 12px #18392b0b}
+h2{font-size:20px;margin:5px 0 12px}h3{font-size:17px;margin:0 0 8px}.muted{color:var(--muted);font-size:14px}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.pill{display:inline-block;background:var(--pale);padding:5px 9px;border-radius:20px;font-size:12px;font-weight:700}
+.exercise{padding:12px 0;border-top:1px solid var(--line)}.exercise:first-of-type{border-top:0}
+.exercise label{display:flex;gap:10px;align-items:flex-start}.exercise input{width:20px;height:20px;accent-color:var(--green);margin-top:2px}
+input[type=number],input[type=date],textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font:inherit;background:white;color:var(--ink)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{background:var(--pale);padding:13px;border-radius:13px}.metric strong{display:block;font-size:23px}
+.hidden{display:none}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.progressbar{height:10px;background:#e5ebe6;border-radius:20px;overflow:hidden}.progressbar span{display:block;height:100%;background:var(--green);width:0}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;padding:9px 5px;border-bottom:1px solid var(--line)}
+small{color:var(--muted)}footer{text-align:center;color:var(--muted);font-size:12px;padding:18px}
+</style>
+</head>
+<body>
+<header><h1>MI CALISTENIA</h1><p>Entrena en casa, poco a poco y con seguridad.</p></header>
+<main>
+<nav class="tabs" aria-label="Secciones">
+<button class="active" data-tab="inicio">Inicio</button><button data-tab="entreno">Entrenar</button><button data-tab="progreso">Progreso</button><button data-tab="perfil">Mi perfil</button>
+</nav>
+<section id="inicio">
+<div class="card">
+<div class="row"><div><span class="pill">PLAN PRINCIPIANTE</span><h2>¡Vamos paso a paso!</h2></div><div style="font-size:34px">🌱</div></div>
+<p class="muted">Empieza con 2 sesiones de fuerza alternas por semana y paseos cómodos. Deja al menos un día de descanso entre sesiones.</p>
+<div class="grid"><div class="metric"><small>Sesiones registradas</small><strong id="sessions">0</strong></div><div class="metric"><small>Peso actual</small><strong id="weightMetric">— kg</strong></div></div>
+<div class="actions"><button class="primary" onclick="showTab('entreno')">Empezar entrenamiento</button></div>
+</div>
+<div class="card"><h3>Tu semana orientativa</h3>
+<p>🟢 Lunes: Fuerza A · 🚶 Martes: paseo</p><p>🟢 Miércoles: descanso o paseo</p><p>🟢 Jueves: Fuerza B · 🚶 Viernes: paseo</p><p>🟢 Fin de semana: paseo suave y descanso</p>
+<small>Adapta los días a tu energía y recuperación.</small></div>
+<div class="card"><h3>Consejos de seguridad</h3><ul><li>Calienta 5 minutos caminando en casa.</li><li>Muévete despacio y sin aguantar la respiración.</li><li>Usa una silla estable apoyada contra la pared.</li><li>Para si aparece dolor, mareo o falta de aire inusual.</li></ul><small>Si tienes problemas cardíacos, articulares, de equilibrio o llevas tiempo inactivo, consulta con un profesional sanitario antes de empezar.</small></div>
+</section>
+<section id="entreno" class="hidden">
+<div class="card"><h2>Entrenamiento de hoy</h2><p class="muted">Elige A o B. Haz 1–2 series al principio, descansando 60–90 segundos.</p>
+<div class="actions"><button class="primary" onclick="choose('A')">Rutina A</button><button onclick="choose('B')">Rutina B</button></div>
+<div id="routine"></div>
+<div class="row"><span id="doneText" class="muted">0 ejercicios completados</span><span id="donePct" class="pill">0%</span></div><div class="progressbar"><span id="bar"></span></div>
+<div class="actions"><button class="primary" onclick="finishSession()">Guardar sesión</button><button onclick="resetChecks()">Desmarcar</button></div>
+</div>
+<div class="card"><h3>Paseo</h3><p class="muted">Anota una caminata cuando te apetezca.</p><label>Minutos caminados</label><input id="walkMinutes" type="number" min="1" placeholder="Ej. 15"><div class="actions"><button onclick="saveWalk()">Guardar paseo</button></div></div>
+</section>
+<section id="progreso" class="hidden">
+<div class="card"><h2>Tu progreso</h2><div class="grid"><div class="metric"><small>Sesiones</small><strong id="sessions2">0</strong></div><div class="metric"><small>Paseos</small><strong id="walks">0</strong></div></div></div>
+<div class="card"><h3>Registrar peso</h3><label>Fecha</label><input id="measureDate" type="date"><label style="display:block;margin-top:10px">Peso (kg)</label><input id="measureWeight" type="number" step=".1" min="1" placeholder="Ej. 90.5"><div class="actions"><button class="primary" onclick="saveWeight()">Guardar medición</button></div></div>
+<div class="card"><h3>Historial</h3><div id="history" class="muted">Todavía no hay mediciones.</div></div>
+</section>
+<section id="perfil" class="hidden">
+<div class="card"><h2>Mi perfil</h2><p class="muted">Puedes cambiar estos datos cuando quieras.</p><label>Edad</label><input id="age" type="number" min="1"><label style="display:block;margin-top:10px">Altura (cm)</label><input id="height" type="number" min="1"><label style="display:block;margin-top:10px">Peso inicial (kg)</label><input id="startWeight" type="number" step=".1" min="1"><div class="actions"><button class="primary" onclick="saveProfile()">Guardar perfil</button></div></div>
+<div class="card"><h3>Tus datos</h3><p class="muted">Se guardan en este dispositivo y navegador. Si borras los datos del navegador, pueden perderse.</p><button onclick="exportData()">Exportar mis datos</button> <button onclick="clearData()">Borrar todos los datos</button></div>
+</section>
+<footer>Mi Calistenia · Constancia antes que intensidad</footer>
+</main>
+<script>
+const routines={
+A:[["Sentarse y levantarse de una silla","6–8 repeticiones"],["Flexiones contra la pared","6–10 repeticiones"],["Elevación de talones con apoyo","10–12 repeticiones"],["Marcha suave en el sitio","30–45 segundos"],["Bird-dog (alternando brazos y piernas)","5 por lado, si resulta cómodo"]],
+B:[["Subir un escalón bajo con apoyo","5 por pierna; opcional"],["Remo con botellas ligeras","8–10 repeticiones"],["Puente de glúteos en el suelo","8–10 repeticiones; opcional"],["Empujes de pared","8–10 repeticiones"],["Equilibrio junto a una silla","10–20 segundos por lado"]]
+};
+let state=JSON.parse(localStorage.getItem("calistenia_v1")||'{"sessions":[],"walks":[],"weights":[],"profile":{"age":60,"height":175,"startWeight":""}}');
+let current="A";
+function persist(){localStorage.setItem("calistenia_v1",JSON.stringify(state));renderStats()}
+function showTab(id){document.querySelectorAll("main section").forEach(s=>s.classList.toggle("hidden",s.id!==id));document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));if(id==="progreso")renderHistory()}
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+function choose(which){current=which;document.getElementById("routine").innerHTML=routines[which].map((e,i)=>`<div class="exercise"><label><input type="checkbox" class="check" onchange="updateProgress()"><span><b>${e[0]}</b><br><small>${e[1]}</small></span></label></div>`).join("");updateProgress()}
+function updateProgress(){let checks=[...document.querySelectorAll(".check")],n=checks.filter(c=>c.checked).length,p=checks.length?Math.round(n/checks.length*100):0;document.getElementById("doneText").textContent=n+" de "+checks.length+" ejercicios completados";document.getElementById("donePct").textContent=p+"%";document.getElementById("bar").style.width=p+"%"}
+function resetChecks(){document.querySelectorAll(".check").forEach(c=>c.checked=false);updateProgress()}
+function finishSession(){let n=[...document.querySelectorAll(".check")].filter(c=>c.checked).length;if(!n){alert("Marca al menos un ejercicio antes de guardar.");return}state.sessions.push({date:new Date().toISOString().slice(0,10),routine:current,done:n,total:routines[current].length});persist();alert("¡Sesión guardada! Buen trabajo.");resetChecks()}
+function saveWalk(){let n=Number(document.getElementById("walkMinutes").value);if(n<=0){alert("Introduce los minutos del paseo.");return}state.walks.push({date:new Date().toISOString().slice(0,10),minutes:n});document.getElementById("walkMinutes").value="";persist();alert("Paseo guardado.")}
+function saveWeight(){let w=Number(document.getElementById("measureWeight").value),d=document.getElementById("measureDate").value;if(w<=0||!d){alert("Indica una fecha y un peso válido.");return}state.weights.push({date:d,weight:w});state.weights.sort((a,b)=>a.date.localeCompare(b.date));persist();renderHistory();document.getElementById("measureWeight").value=""}
+function renderHistory(){let el=document.getElementById("history");el.innerHTML=state.weights.length?`<table><tr><th>Fecha</th><th>Peso</th></tr>${state.weights.slice().reverse().map(x=>`<tr><td>${x.date}</td><td>${x.weight.toFixed(1)} kg</td></tr>`).join("")}</table>`:"Todavía no hay mediciones."}
+function renderStats(){let w=state.weights.length?state.weights[state.weights.length-1].weight:"—";document.getElementById("sessions").textContent=state.sessions.length;document.getElementById("sessions2").textContent=state.sessions.length;document.getElementById("walks").textContent=state.walks.length;document.getElementById("weightMetric").textContent=w==="—"?"— kg":w.toFixed(1)+" kg"}
+function saveProfile(){state.profile={age:Number(document.getElementById("age").value),height:Number(document.getElementById("height").value),startWeight:Number(document.getElementById("startWeight").value)||""};persist();alert("Perfil guardado.")}
+function exportData(){let a=document.createElement("a"),u=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:"application/json"}));a.href=u;a.download="mi-calistenia-datos.json";a.click();URL.revokeObjectURL(u)}
+function clearData(){if(confirm("¿Seguro que quieres borrar todos tus datos?")){localStorage.removeItem("calistenia_v1");location.reload()}}
+function init(){document.getElementById("age").value=state.profile.age||60;document.getElementById("height").value=state.profile.height||175;document.getElementById("startWeight").value=state.profile.startWeight||"";document.getElementById("measureDate").value=new Date().toISOString().slice(0,10);choose("A");renderStats();renderHistory();if("serviceWorker"in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{})}
+init();
+</script>
+</body></html>

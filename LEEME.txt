@@ -1,0 +1,13 @@
+MI CALISTENIA — aplicación web instalable (PWA)
+
+IMPORTANTE: este paquete no es un APK. Para instalarla como aplicación en Android debe publicarse en una dirección HTTPS.
+
+Pasos sencillos:
+1. Sube el CONTENIDO de esta carpeta a un alojamiento web HTTPS que sirva archivos estáticos (por ejemplo, GitHub Pages o Netlify).
+2. Abre la URL publicada en Chrome en tu Xiaomi.
+3. Pulsa ⋮ > Instalar aplicación (o Añadir a pantalla de inicio).
+4. Confirma. Aparecerá el icono Mi Calistenia.
+
+Los datos de progreso se guardan localmente en el navegador/dispositivo. Exporta periódicamente una copia desde Mi perfil. No incluye sincronización en la nube.
+
+Para modificar el plan, edita index.html.
